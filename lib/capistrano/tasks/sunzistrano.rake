@@ -111,7 +111,8 @@ end
 namespace :load do
   task :defaults do
     set :application, -> { 'app' }
-    set :deploy_to, -> { "/home/deploy/#{fetch(:application)}" }
+    set :deploy_user, -> { 'deploy' }
+    set :deploy_to, -> { "/home/#{fetch(:deploy_user)}/#{fetch(:application)}" }
     set :rbenv_type, -> { :user }
     set :rbenv_ruby, -> { '2.2.2' }
     set :rbenv_prefix, -> { "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec" }

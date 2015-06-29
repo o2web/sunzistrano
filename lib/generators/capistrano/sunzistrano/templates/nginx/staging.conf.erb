@@ -1,0 +1,37 @@
+# /opt/nginx/conf/nginx.conf
+user  deploy;
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+<% ruby_majors = fetch(:rbenv_ruby).split('.')[0..1].join('.') + '.0' %>
+http {
+    passenger_root /home/deploy/.rbenv/versions/<%= fetch(:rbenv_ruby) %>/lib/ruby/gems/<%= ruby_majors %>/gems/passenger-<%= fetch(:passenger_version) %>;
+    passenger_ruby /home/deploy/.rbenv/versions/<%= fetch(:rbenv_ruby) %>/bin/ruby;
+
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    server {
+        listen 80 default_server;
+
+        server_name <%= fetch(:server_staging) %>;
+        passenger_enabled on;
+        rails_env staging;
+        root /home/deploy/<%= fetch(:application) %>/current/public;
+
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+}

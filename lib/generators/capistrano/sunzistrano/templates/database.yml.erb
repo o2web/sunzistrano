@@ -1,0 +1,31 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: 5
+  host: 127.0.0.1
+
+development:
+  <<: *default
+  database: <%= fetch(:application) %>_development
+  username: postgres
+  password: postgres
+
+test:
+  <<: *default
+  database: <%= fetch(:application) %>_test
+  username: postgres
+  password: postgres
+
+staging:
+  <<: *default
+  database: <%= fetch(:application) %>_staging
+  username: keeper
+  password: secret4keeper
+
+production:
+  <<: *default
+  database: <%= fetch(:application) %>_production
+  username: keeper
+  password: secret4keeper
