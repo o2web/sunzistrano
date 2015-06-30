@@ -8,7 +8,7 @@ module Sunzistrano
         directory "deploy",         "config/deploy"
         directory "environments",   "config/environments"
         directory "sunzi",          "config/sunzi"
-        copy_file "Capfile",        "../config/Capfile"
+        copy_file "Capfile",        "Capfile"
         copy_file "database.yml",   "config/database.yml"
         copy_file "deploy.rb",      "config/deploy.rb"
         copy_file "nginx.conf.erb", "config/nginx.conf.erb"
