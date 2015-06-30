@@ -38,7 +38,7 @@ Also, your ruby and passenger versions are in `config/sunzi/sunzi.yml`
 
     $ bundle exec cap staging deploy
 
-    $ bundle exec cap staging sync_db:local_to_server
+    $ bundle exec cap staging db:local_to_server
 
     $ bundle exec cap staging nginx:export_conf
 
