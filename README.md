@@ -1,28 +1,54 @@
 # Sunzistrano
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/sunzistrano`. To experiment with that code, run `bin/console` for an interactive prompt.
+TODO: Basic deploy scenario with Capistrano and Sunzi already configured.
 
-TODO: Delete this and the text above, and describe your gem
+TODO: describe the scenario
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-```ruby
-gem 'sunzistrano'
-```
+`gem 'sunzistrano', github: 'o2web/sunzistrano', branch: 'master', group: [:development]`
+
+Install [Sunzi](https://github.com/kenn/sunzi) if not already installed:
+
+    $ gem install sunzi
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
+    $ bundle exec rails g sunzistrano:install
 
-    $ gem install sunzistrano
+Find all the todos added and change the configurations to your needs.
+
+If this is not a new rails project, diff your project after running the install and bring back what is needed.
+
+Also, your ruby and passenger versions are in `config/sunzi/sunzi.yml`
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ cd config/sunzi
+
+    $ sunzi deploy admin@todo.todo.todo.todo admin --sudo
+
+    $ sunzi deploy deploy@todo.todo.todo.todo deploy
+
+    $ cd ../..
+
+    $ bundle exec cap staging deploy
+
+    $ bundle exec cap staging sync_db:local_to_server
+
+    $ bundle exec cap staging nginx:export_conf
+
+    $ bundle exec cap staging nginx:restart
+
+Optional:
+
+    $ # upload pictures, attachments
+
+You're done!
 
 ## Development
 
