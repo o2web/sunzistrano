@@ -112,14 +112,16 @@ namespace :load do
   task :defaults do
     CONFIG = YAML.load(File.read('config/sunzi/sunzi.yml'))
     CONFIG.symbolize_keys!
+    config = CONFIG[:attributes]
+    config.symbolize_keys!
 
     set :application, 'app'
     set :deploy_to, "/home/deploy/app"
     set :rbenv_type, :user
-    set :rbenv_ruby, CONFIG[:attributes]['rbenv_ruby']
+    set :rbenv_ruby, config[:rbenv_ruby]
     set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
     set :rbenv_map_bins, %w{rake gem bundle ruby rails}
-    set :passenger_version, CONFIG[:attributes]['passenger_version']
+    set :passenger_version, config[:passenger_version]
     set :passenger_restart_with_sudo, false
     set :passenger_restart_command, 'rbenv sudo passenger-config restart-app'
     set :sys_admin, -> { 'admin' }
