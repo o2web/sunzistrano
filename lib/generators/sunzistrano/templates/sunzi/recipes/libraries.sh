@@ -2,7 +2,6 @@ if hash expect 2>/dev/null; then
   echo "Librairies already installed, skipping"
 else
   sudo apt-get update
-  sudo apt-get -y upgrade
 
   sudo timedatectl set-timezone <%= @attributes.timezone %>
 
