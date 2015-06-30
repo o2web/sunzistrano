@@ -6,7 +6,7 @@ events {
     worker_connections  1024;
 }
 
-<% ruby_majors = fetch(:rbenv_ruby).split('.')[0..1].join('.') + '.0' %>
+<% ruby_majors = "#{ fetch(:rbenv_ruby).split('.')[0..1].join('.') }.0" %>
 http {
     passenger_root /home/deploy/.rbenv/versions/<%= fetch(:rbenv_ruby) %>/lib/ruby/gems/<%= ruby_majors %>/gems/passenger-<%= fetch(:passenger_version) %>;
     passenger_ruby /home/deploy/.rbenv/versions/<%= fetch(:rbenv_ruby) %>/bin/ruby;
@@ -24,10 +24,10 @@ http {
     server {
         listen 80 default_server;
 
-        server_name <%= fetch(:server_production) %>;
+        server_name <%= fetch(:server) %>;
         passenger_enabled on;
-        rails_env production;
-        root /home/deploy/<%= fetch(:application) %>/current/public;
+        rails_env <%= fetch(:stage) %>;
+        root /home/deploy/app/current/public;
 
         error_page   500 502 503 504  /50x.html;
         location = /50x.html {

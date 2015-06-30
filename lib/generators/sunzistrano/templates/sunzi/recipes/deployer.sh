@@ -1,13 +1,11 @@
-DEPLOY_USER=<%= @attributes.deploy_user %>
-DEPLOY_PATH=/home/$DEPLOY_USER
-DEPLOY_PWD=<%= @attributes.deploy_pwd %>
+DEPLOY_PATH=/home/deploy
 
 if [ -d $DEPLOY_PATH ]; then
 	echo "User already created, skipping"
 else
-  adduser $DEPLOY_USER --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
-  echo "$DEPLOY_USER:$DEPLOY_PWD" | sudo chpasswd
-  adduser $DEPLOY_USER sudo
+  adduser deploy --gecos "First Last,RoomNumber,WorkPhone,HomePhone" --disabled-password
+  echo "deploy:secret4deploy" | sudo chpasswd
+  adduser deploy sudo
 
   mkdir $DEPLOY_PATH/.ssh
   chmod 700 $DEPLOY_PATH/.ssh
@@ -15,7 +13,7 @@ else
   mv files/id_rsa.pub $DEPLOY_PATH/.ssh/authorized_keys
   chmod 644 $DEPLOY_PATH/.ssh/authorized_keys
 
-  chown -R $DEPLOY_USER:$DEPLOY_USER $DEPLOY_PATH
+  chown -R deploy:deploy $DEPLOY_PATH
 
 	mv files/sudoers /etc/sudoers.d/deploy
 	chown root:root /etc/sudoers.d/deploy

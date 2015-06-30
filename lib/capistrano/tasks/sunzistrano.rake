@@ -12,7 +12,6 @@ require 'capistrano/rails/migrations'
 require 'capistrano/nginx'
 require 'capistrano/passenger'
 
-
 namespace :cache do
   desc 'Clear tmp cache'
   task :clear do
@@ -26,7 +25,7 @@ namespace :cache do
   end
 end
 
-namespace :assets do
+namespace :uploads do
   def send_files(type, server)
     raise "No server given" if !server
     FileUtils.mkdir_p "./uploads/#{type}"
@@ -69,7 +68,7 @@ namespace :assets do
   end
 end
 
-namespace :sync_db do
+namespace :db do
   desc "Sync local DB with server DB"
   task :server_to_local do
     on roles(:app) do |role|
@@ -103,24 +102,28 @@ namespace :nginx do
   desc 'Export nginx.conf'
   task :export_conf do
     on roles :app do |host|
-      system "rsync --rsync-path='sudo rsync' --progress 'ssh -p #{fetch(:port)}' 'config/nginx/#{fetch(:stage)}.conf' #{fetch(:sys_admin)}@#{host.hostname}:/opt/nginx/conf/nginx.conf"
+      #todo, need to eval .erb
+      system "rsync --rsync-path='sudo rsync' --progress 'ssh -p #{fetch(:port)}' 'config/nginx.conf' #{fetch(:sys_admin)}@#{host.hostname}:/opt/nginx/conf/nginx.conf"
     end
   end
 end
 
 namespace :load do
   task :defaults do
-    set :application, -> { 'app' }
-    set :deploy_user, -> { 'deploy' }
-    set :deploy_to, -> { "/home/#{fetch(:deploy_user)}/#{fetch(:application)}" }
-    set :rbenv_type, -> { :user }
-    set :rbenv_ruby, -> { '2.2.2' }
-    set :rbenv_prefix, -> { "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec" }
-    set :rbenv_map_bins, -> { %w{rake gem bundle ruby rails} }
-    set :passenger_restart_with_sudo, -> { false }
-    set :passenger_restart_command, -> { 'rbenv sudo passenger-config restart-app' }
+    CONFIG = YAML.load(File.read('config/sunzi/sunzi.yml'))
+    CONFIG.symbolize_keys!
+
+    set :application, 'app'
+    set :deploy_to, "/home/deploy/app"
+    set :rbenv_type, :user
+    set :rbenv_ruby, CONFIG[:attributes]['rbenv_ruby']
+    set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+    set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+    set :passenger_version, CONFIG[:attributes]['passenger_version']
+    set :passenger_restart_with_sudo, false
+    set :passenger_restart_command, 'rbenv sudo passenger-config restart-app'
     set :sys_admin, -> { 'admin' }
-    set :pty, -> { true }
+    set :pty, true
     set :linked_dirs, fetch(:linked_dirs, []).push(*%W[
       log
       tmp/pids

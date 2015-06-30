@@ -1,14 +1,9 @@
 ---
 # Dynamic variables here will be compiled to individual files in compiled/attributes.
 attributes:
-  app_name: <%= fetch(:application) %>
-  deploy_user: deploy
-  deploy_pwd: secret4deploy
-  postgres_user: keeper
-  postgres_pwd: secret4keeper
   timezone: America/New_York
-  rbenv_ruby: <%= fetch(:rbenv_ruby) %>
-  passenger_version: <%= fetch(:passenger_version) %>
+  rbenv_ruby: 2.2.2
+  passenger_version: 5.0.11
   increase_swap: false # needed if the swap is less than 1024Mb
 
 # Remote recipes here will be downloaded to compiled/recipes.

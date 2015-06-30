@@ -1,5 +1,4 @@
-DEPLOY_USER=<%= @attributes.deploy_user %>
-DEPLOY_PATH=/home/$DEPLOY_USER
+DEPLOY_PATH=/home/deploy
 RBENV_PATH=$DEPLOY_PATH/.rbenv
 PLUGINS_PATH=$RBENV_PATH/plugins
 PROFILE=$DEPLOY_PATH/.bashrc

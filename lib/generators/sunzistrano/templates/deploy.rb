@@ -1,8 +1,7 @@
 # config valid only for current version of Capistrano
 lock '3.4.0'
 
-set :application, <%= fetch(:application) %>
-set :repo_url, 'git@todo.com:todo/todo.git'
+set :repo_url, 'git@todo.todo:todo/todo.git'
 
 # user with root access for nginx:export_conf
 # set :sys_admin, 'admin'

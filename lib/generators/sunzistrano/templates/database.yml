@@ -8,24 +8,24 @@ default: &default
 
 development:
   <<: *default
-  database: <%= fetch(:application) %>_development
+  database: todo_development
   username: postgres
   password: postgres
 
 test:
   <<: *default
-  database: <%= fetch(:application) %>_test
+  database: todo_test
   username: postgres
   password: postgres
 
 staging:
   <<: *default
-  database: <%= fetch(:application) %>_staging
+  database: app_staging
   username: keeper
   password: secret4keeper
 
 production:
   <<: *default
-  database: <%= fetch(:application) %>_production
+  database: app_production
   username: keeper
   password: secret4keeper
