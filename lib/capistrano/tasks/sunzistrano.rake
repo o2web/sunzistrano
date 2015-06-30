@@ -12,6 +12,9 @@ require 'capistrano/rails/migrations'
 require 'capistrano/nginx'
 require 'capistrano/passenger'
 
+require 'erb'
+
+
 namespace :cache do
   desc 'Clear tmp cache'
   task :clear do
@@ -102,8 +105,11 @@ namespace :nginx do
   desc 'Export nginx.conf'
   task :export_conf do
     on roles :app do |host|
-      #todo, need to eval .erb
+      File.open('config/nginx.conf', 'w') do |f|
+        f.puts ERB.new(File.read('config/nginx.conf.erb')).result
+      end
       system "rsync --rsync-path='sudo rsync' --progress 'ssh -p #{fetch(:port)}' 'config/nginx.conf' #{fetch(:sys_admin)}@#{host.hostname}:/opt/nginx/conf/nginx.conf"
+      FileUtils.rm_f 'config/nginx.conf'
     end
   end
 end
