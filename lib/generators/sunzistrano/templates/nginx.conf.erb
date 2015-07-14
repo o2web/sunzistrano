@@ -34,4 +34,11 @@ http {
             root   html;
         }
     }
+
+    server {
+        listen 80;
+
+        server_name www.<%= fetch(:server) %>;
+        return 301 $scheme://<%= fetch(:server) %>$request_uri;
+    }
 }
