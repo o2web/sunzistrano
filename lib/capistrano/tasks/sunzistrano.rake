@@ -15,6 +15,17 @@ require 'capistrano/passenger'
 require 'erb'
 
 
+namespace :git do
+  desc 'Update changed repo url'
+  task :update_repo_url do
+    on roles :app do
+      within repo_path do
+        execute :git, 'remote', 'set-url', 'origin', fetch(:repo_url)
+      end
+    end
+  end
+end
+
 namespace :cache do
   desc 'Clear tmp cache'
   task :clear do
