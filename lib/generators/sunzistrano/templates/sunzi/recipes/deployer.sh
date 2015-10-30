@@ -15,7 +15,7 @@ else
 
   chown -R deploy:deploy $DEPLOY_PATH
 
-	mv files/sudoers /etc/sudoers.d/deploy
-	chown root:root /etc/sudoers.d/deploy
-	chmod 0440 /etc/sudoers.d/deploy
+  mv files/sudoers /etc/sudoers.d/deploy
+  chown root:root /etc/sudoers.d/deploy
+  chmod 0440 /etc/sudoers.d/deploy
 fi
